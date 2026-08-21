@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Mobility Map</title>
+  <meta name="description" content="Interactive prototype for mapping skills, experience and career movement." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="hero">
+    <div class="hero__glow hero__glow--one"></div>
+    <div class="hero__glow hero__glow--two"></div>
+    <div class="shell hero__inner">
+      <div class="eyebrow">Interactive career mobility prototype</div>
+      <h1>Map your skills.<br><span>Map your experience.</span><br>Map your movement.</h1>
+      <p class="hero__lede">
+        Career development is not always about moving upwards. It can deepen expertise,
+        broaden experience, move sideways into another function, or build towards a
+        completely different role.
+      </p>
+
+      <div class="hero__actions" aria-label="Explore key sections">
+        <a class="btn btn--primary" href="#skills-match">Explore my skills</a>
+        <a class="btn btn--inverse" href="#movement-map">Explore career movements</a>
+        <a class="btn btn--soft" href="#skills-bank">Skills Bank</a>
+        <a class="btn btn--soft" href="#examples">Real career journeys</a>
+      </div>
+
+      <div class="question-grid" aria-label="Four questions the map helps answer">
+        <article><b>01</b><span>Where am I now?</span><small>Select your current function.</small></article>
+        <article><b>02</b><span>What skills do I already have?</span><small>See the capabilities embedded in your role.</small></article>
+        <article><b>03</b><span>Where could those skills take me?</span><small>Explore close, adjacent and stretch moves.</small></article>
+        <article><b>04</b><span>What would I need to learn?</span><small>Make the specialist knowledge gap visible.</small></article>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sticky-nav" aria-label="Feature navigation">
+    <div class="shell nav-row">
+      <a href="#skills-match">Current → Dream</a>
+      <a href="#movement-map">Movement map</a>
+      <a href="#skills-bank">Skills bank</a>
+      <a href="#examples">Previous examples</a>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="section shell" id="skills-match">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow eyebrow--dark">01 · Current → Dream</div>
+          <h2>What could your skills unlock?</h2>
+        </div>
+        <p>
+          Choose a current function and a destination. The tool separates
+          transferable capability from specialist knowledge, so a move is framed
+          as a bridge to build rather than a reset.
+        </p>
+      </div>
+
+      <div class="match-builder card">
+        <div class="select-grid">
+          <label>
+            <span>Current function</span>
+            <select id="currentFunction">
+              <option value="">Choose where you are now</option>
+            </select>
+          </label>
+
+          <div class="arrow-disc" aria-hidden="true">→</div>
+
+          <label>
+            <span>Dream function</span>
+            <select id="dreamFunction">
+              <option value="">Choose where you want to go</option>
+            </select>
+          </label>
+        </div>
+        <div class="builder-actions">
+          <button class="btn btn--primary" id="compareBtn" type="button">Map this movement</button>
+          <button class="btn btn--ghost" id="exampleBtn" type="button">Try an example</button>
+        </div>
+      </div>
+
+      <div id="matchEmpty" class="empty-state">
+        <div class="empty-state__icon">↗</div>
+        <h3>Choose two functions to reveal the bridge.</h3>
+        <p>You’ll see what transfers, what changes, and one possible route between them.</p>
+      </div>
+
+      <div id="matchResults" class="match-results" hidden>
+        <div class="match-summary card">
+          <div>
+            <div class="eyebrow eyebrow--dark">Movement assessment</div>
+            <div class="match-title-row">
+              <h3 id="matchTitle"></h3>
+              <span id="matchBadge" class="match-badge"></span>
+            </div>
+            <p id="matchExplanation"></p>
+          </div>
+          <button class="btn btn--ghost" id="showOnMapBtn" type="button">Show this route on the map</button>
+        </div>
+
+        <div class="route-strip card">
+          <div class="eyebrow eyebrow--dark">Potential path</div>
+          <div id="routePath" class="route-path" aria-label="Potential career route"></div>
+        </div>
+
+        <div class="insight-grid">
+          <article class="insight-card insight-card--have">
+            <div class="insight-card__kicker">You already have</div>
+            <h3>Transferable capability</h3>
+            <p>Capabilities from your current role that are relevant to the destination.</p>
+            <div id="transferSkills" class="chips"></div>
+          </article>
+
+          <article class="insight-card insight-card--gap">
+            <div class="insight-card__kicker">Your knowledge gap</div>
+            <h3>Specialist knowledge</h3>
+            <p>Function-specific knowledge or applied experience to acquire.</p>
+            <div id="gapSkills" class="chips"></div>
+          </article>
+        </div>
+
+        <div class="two-panel-grid">
+          <article class="role-panel card">
+            <div class="role-panel__top">
+              <div>
+                <div class="eyebrow eyebrow--dark">Current skill set</div>
+                <h3 id="currentRoleName"></h3>
+              </div>
+              <span class="mini-tag">Now</span>
+            </div>
+            <div id="currentCapabilities" class="skill-list"></div>
+          </article>
+
+          <article class="role-panel card">
+            <div class="role-panel__top">
+              <div>
+                <div class="eyebrow eyebrow--dark">Dream skill set</div>
+                <h3 id="dreamRoleName"></h3>
+              </div>
+              <span class="mini-tag mini-tag--dream">Next</span>
+            </div>
+            <div class="subheading">Transferable capabilities</div>
+            <div id="dreamCapabilities" class="skill-list"></div>
+            <div class="subheading subheading--spaced">Specialist knowledge</div>
+            <div id="dreamSpecialist" class="skill-list skill-list--specialist"></div>
+          </article>
+        </div>
+
+        <article class="bridge card">
+          <div class="bridge__intro">
+            <div class="eyebrow eyebrow--dark">Build the bridge</div>
+            <h3>Development should match the distance of the move.</h3>
+            <p>Explore first, gain exposure, stretch into the work, then make the move when it is useful.</p>
+          </div>
+          <div id="bridgeSteps" class="bridge-steps"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section--tint" id="movement-map">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow eyebrow--dark">02 · Movement map</div>
+            <h2>See the whole career landscape.</h2>
+          </div>
+          <p>
+            Every line is a potential movement in the source map. Click a function
+            to reveal its outgoing routes; click a destination to inspect what
+            transfers and what needs to be learned.
+          </p>
+        </div>
+
+        <div class="map-toolbar card">
+          <div class="legend" aria-label="Movement type legend">
+            <span><i class="dot dot--close"></i>Close match</span>
+            <span><i class="dot dot--adjacent"></i>Adjacent move</span>
+            <span><i class="dot dot--stretch"></i>Stretch move</span>
+          </div>
+          <div class="map-actions">
+            <button class="filter-btn is-active" data-map-filter="all" type="button">All</button>
+            <button class="filter-btn" data-map-filter="close" type="button">Close</button>
+            <button class="filter-btn" data-map-filter="adjacent" type="button">Adjacent</button>
+            <button class="filter-btn" data-map-filter="stretch" type="button">Stretch</button>
+            <button class="filter-btn" id="resetMapBtn" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="map-layout">
+          <div class="network-card card">
+            <svg id="careerMap" viewBox="0 0 960 680" role="img" aria-labelledby="mapTitle mapDesc">
+              <title id="mapTitle">Interactive career movement network</title>
+              <desc id="mapDesc">Functions are shown as nodes, connected by close, adjacent and stretch career moves.</desc>
+              <defs>
+                <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="5" stdDeviation="7" flood-opacity=".12"/>
+                </filter>
+              </defs>
+              <g id="edgeLayer"></g>
+              <g id="nodeLayer"></g>
+            </svg>
+            <p class="map-hint">Tip: select a node, then choose one of its destinations in the route panel.</p>
+          </div>
+
+          <aside class="route-detail card" id="mapRouteDetail">
+            <div class="eyebrow eyebrow--dark">Selected function</div>
+            <h3 id="selectedNodeTitle">Choose a function</h3>
+            <p id="selectedNodeIntro">Its possible movements will appear here.</p>
+            <div id="routeOptions" class="route-options"></div>
+
+            <div id="selectedRouteDetail" hidden>
+              <div class="detail-divider"></div>
+              <div class="route-detail__header">
+                <span id="routeDetailBadge" class="match-badge"></span>
+                <h4 id="routeDetailTitle"></h4>
+              </div>
+              <div class="mini-columns">
+                <div>
+                  <span>What transfers</span>
+                  <ul id="routeDetailTransfers"></ul>
+                </div>
+                <div>
+                  <span>Knowledge gap</span>
+                  <ul id="routeDetailGap"></ul>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="skills-bank">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow eyebrow--dark">03 · Skills bank</div>
+          <h2>A shared language for what people can do.</h2>
+        </div>
+        <p>
+          The bank separates portable capability from the function-specific context
+          in which that capability is currently being used.
+        </p>
+      </div>
+
+      <div class="definition-banner">
+        <div class="definition-banner__mark">SB</div>
+        <div>
+          <div class="eyebrow eyebrow--light">Definition</div>
+          <h3>What is a Skills Bank?</h3>
+          <p>
+            “The Skills Bank is a shared language for understanding the capabilities,
+            knowledge and experience that exist across the organisation. It helps employees
+            recognise skills they already use, understand how those capabilities translate
+            across functions, and identify specialist knowledge they may want to build for
+            future career moves.”
+          </p>
+        </div>
+      </div>
+
+      <div class="bank-categories">
+        <div class="category-pill"><strong>Transferable capability</strong><span>A capability that can be applied readily across different functions.</span></div>
+        <div class="category-pill"><strong>Adjacent / applied capability</strong><span>The underlying capability transfers, but the way it is used differs between functions.</span></div>
+        <div class="category-pill"><strong>Specialist knowledge</strong><span>Function-specific knowledge, systems, legislation, techniques or terminology that may need to be learned.</span></div>
+      </div>
+
+      <div class="bank-controls card">
+        <label class="search-box">
+          <span class="sr-only">Search the skills bank</span>
+          <input id="skillSearch" type="search" placeholder="Search a skill, e.g. storytelling, data, negotiation…" />
+        </label>
+        <label>
+          <span class="sr-only">Filter by function</span>
+          <select id="skillFunctionFilter">
+            <option value="all">All functions</option>
+          </select>
+        </label>
+        <div class="segmented" aria-label="Skills bank view">
+          <button type="button" class="is-active" data-skill-view="master">Transferable capability</button>
+          <button type="button" data-skill-view="department">Adjacent / applied</button>
+          <button type="button" data-skill-view="function">Specialist knowledge</button>
+        </div>
+      </div>
+
+      <div id="skillsBankGrid" class="skills-bank-grid"></div>
+      <aside id="skillDetail" class="skill-detail card" aria-live="polite">
+        <div class="eyebrow eyebrow--dark">Skill detail</div>
+        <h3>Select a skill to explore how it translates across functions.</h3>
+        <p>Choose a skill card to see its definition, where it appears, and how it is applied in different roles.</p>
+      </aside>
+    </section>
+
+    <section class="section section--dark" id="examples">
+      <div class="shell">
+        <div class="section-heading section-heading--light">
+          <div>
+            <div class="eyebrow">04 · Previous examples</div>
+            <h2>Movement has already happened.</h2>
+          </div>
+          <p>
+            These anonymised journeys show why cross-functional movement matters:
+            a sideways move can be a bridge, an accelerator, or a way to return stronger.
+          </p>
+        </div>
+
+        <div id="journeyList" class="journey-list"></div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="shell closing__inner">
+        <div>
+          <div class="eyebrow eyebrow--light">The core message</div>
+          <h2>You do not start from scratch when you move.</h2>
+        </div>
+        <p>
+          You carry capability with you. The question is not “Do I already know this
+          function?” but “What do I already have, how does it apply differently there,
+          and what do I need to learn next?”
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <span>Interactive Career Mobility Map · prototype</span>
+      <span>Built as a dependency-free HTML / CSS / JavaScript demo.</span>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

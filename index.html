@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Career, Mapped</title>
+  <meta name="description" content="Map your skills, explore where they could take you, identify the gaps and build a route to get there." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="hero">
+    <div class="hero__glow hero__glow--one"></div>
+    <div class="hero__glow hero__glow--two"></div>
+    <div class="shell hero__inner">
+      <div class="eyebrow">Interactive career mobility</div>
+      <h1>Your career,<br><span>mapped.</span></h1>
+      <p class="hero__lede hero__lede--strong">
+        Map your skills. See where they could take you. Identify the gaps.
+        Build the route to get there.
+      </p>
+      <div class="hero-route" aria-label="Career mapping journey">
+        <span>What you have</span><i>→</i><span>Where you could go</span><i>→</i><span>What to build</span><i>→</i><span>How to get there</span>
+      </div>
+
+      <div class="question-grid" aria-label="Four questions the map helps answer">
+        <article><b>01</b><span>Where am I now?</span><small>Select your current function.</small></article>
+        <article><b>02</b><span>What skills do I already have?</span><small>See the capabilities embedded in your role.</small></article>
+        <article><b>03</b><span>Where could those skills take me?</span><small>Explore close, adjacent and stretch moves.</small></article>
+        <article><b>04</b><span>How could I get there?</span><small>Turn the gap into practical development experiences.</small></article>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sticky-nav" aria-label="Feature navigation">
+    <div class="shell nav-row">
+      <a href="#skills-match">Explore a move</a>
+      <a href="#movement-map">Movement map</a>
+      <a href="#development-route">How to get there</a>
+      <a href="#skills-bank">Skills bank</a>
+      <a href="#examples">Career journeys</a>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="section shell" id="skills-match">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow eyebrow--dark">01 · I know where I want to go</div>
+          <h2>Explore a move.</h2>
+        </div>
+        <p>
+          Choose where you are now and where you are curious about going. See what
+          already transfers, what you would need to build, and the route between the two.
+        </p>
+      </div>
+
+      <div class="match-builder card">
+        <div class="select-grid">
+          <label>
+            <span>Current function</span>
+            <select id="currentFunction">
+              <option value="">Choose where you are now</option>
+            </select>
+          </label>
+
+          <div class="arrow-disc" aria-hidden="true">→</div>
+
+          <label>
+            <span>Target function</span>
+            <select id="dreamFunction">
+              <option value="">Choose where you could go</option>
+            </select>
+          </label>
+        </div>
+        <div class="builder-actions">
+          <button class="btn btn--primary" id="compareBtn" type="button">Map this movement</button>
+          <button class="btn btn--ghost" id="exampleBtn" type="button">Try an example</button>
+        </div>
+      </div>
+
+      <div id="matchEmpty" class="empty-state">
+        <div class="empty-state__icon">↗</div>
+        <h3>Choose two functions to reveal the bridge.</h3>
+        <p>You’ll see what transfers, what changes, and one possible route between them.</p>
+      </div>
+
+      <div id="matchResults" class="match-results" hidden>
+        <div class="match-summary card">
+          <div>
+            <div class="eyebrow eyebrow--dark">Movement assessment</div>
+            <div class="match-title-row">
+              <h3 id="matchTitle"></h3>
+              <span id="matchBadge" class="match-badge"></span>
+            </div>
+            <p id="matchExplanation"></p>
+          </div>
+          <button class="btn btn--ghost" id="showOnMapBtn" type="button">Show this route on the map</button>
+        </div>
+
+        <div class="route-strip card">
+          <div class="eyebrow eyebrow--dark">Potential path</div>
+          <div id="routePath" class="route-path" aria-label="Potential career route"></div>
+        </div>
+
+        <div class="insight-grid">
+          <article class="insight-card insight-card--have">
+            <div class="insight-card__kicker">You already have</div>
+            <h3>Transferable capability</h3>
+            <p>Capabilities from your current role that are relevant to the destination.</p>
+            <div id="transferSkills" class="chips"></div>
+          </article>
+
+          <article class="insight-card insight-card--gap">
+            <div class="insight-card__kicker">Your knowledge gap</div>
+            <h3>Specialist knowledge</h3>
+            <p>Function-specific knowledge or applied experience to acquire.</p>
+            <div id="gapSkills" class="chips"></div>
+          </article>
+        </div>
+
+        <div class="comparison-actions card">
+          <div>
+            <div class="eyebrow eyebrow--dark">Turn insight into action</div>
+            <h3>How could you build this bridge?</h3>
+            <p id="developmentRecommendation">Choose a development route that matches the distance of the move.</p>
+          </div>
+          <button class="btn btn--primary" id="buildRouteBtn" type="button">Build my development route</button>
+        </div>
+
+        <details class="skill-profile-details card">
+          <summary>See full current and target skill profiles</summary>
+          <div class="two-panel-grid two-panel-grid--inside">
+            <article class="role-panel">
+              <div class="role-panel__top">
+                <div>
+                  <div class="eyebrow eyebrow--dark">Current skill set</div>
+                  <h3 id="currentRoleName"></h3>
+                </div>
+                <span class="mini-tag">Now</span>
+              </div>
+              <div id="currentCapabilities" class="skill-list"></div>
+            </article>
+
+            <article class="role-panel">
+              <div class="role-panel__top">
+                <div>
+                  <div class="eyebrow eyebrow--dark">Target skill set</div>
+                  <h3 id="dreamRoleName"></h3>
+                </div>
+                <span class="mini-tag mini-tag--dream">Next</span>
+              </div>
+              <div class="subheading">Transferable capabilities</div>
+              <div id="dreamCapabilities" class="skill-list"></div>
+              <div class="subheading subheading--spaced">Specialist knowledge</div>
+              <div id="dreamSpecialist" class="skill-list skill-list--specialist"></div>
+            </article>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section section--tint" id="movement-map">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow eyebrow--dark">02 · Movement map</div>
+            <h2>See the whole career landscape.</h2>
+          </div>
+          <p>
+            Every line is a potential movement in the source map. Click a function
+            to reveal its outgoing routes; click a destination to inspect what
+            transfers and what needs to be learned.
+          </p>
+        </div>
+
+        <div class="map-toolbar card">
+          <div class="legend" aria-label="Movement type legend">
+            <span><i class="dot dot--close"></i>Close match</span>
+            <span><i class="dot dot--adjacent"></i>Adjacent move</span>
+            <span><i class="dot dot--stretch"></i>Stretch move</span>
+          </div>
+          <div class="map-actions">
+            <button class="filter-btn is-active" data-map-filter="all" type="button">All</button>
+            <button class="filter-btn" data-map-filter="close" type="button">Close</button>
+            <button class="filter-btn" data-map-filter="adjacent" type="button">Adjacent</button>
+            <button class="filter-btn" data-map-filter="stretch" type="button">Stretch</button>
+            <button class="filter-btn" id="resetMapBtn" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="map-layout">
+          <div class="network-card card">
+            <svg id="careerMap" viewBox="0 0 960 680" role="img" aria-labelledby="mapTitle mapDesc">
+              <title id="mapTitle">Interactive career movement network</title>
+              <desc id="mapDesc">Functions are shown as nodes, connected by close, adjacent and stretch career moves.</desc>
+              <defs>
+                <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="5" stdDeviation="7" flood-opacity=".12"/>
+                </filter>
+              </defs>
+              <g id="edgeLayer"></g>
+              <g id="nodeLayer"></g>
+            </svg>
+            <p class="map-hint">Tip: select a node, then choose one of its destinations in the route panel.</p>
+          </div>
+
+          <aside class="route-detail card" id="mapRouteDetail">
+            <div class="eyebrow eyebrow--dark">Selected function</div>
+            <h3 id="selectedNodeTitle">Choose a function</h3>
+            <p id="selectedNodeIntro">Its possible movements will appear here.</p>
+            <div id="routeOptions" class="route-options"></div>
+
+            <div id="selectedRouteDetail" hidden>
+              <div class="detail-divider"></div>
+              <div class="route-detail__header">
+                <span id="routeDetailBadge" class="match-badge"></span>
+                <h4 id="routeDetailTitle"></h4>
+              </div>
+              <div class="mini-columns">
+                <div>
+                  <span>What transfers</span>
+                  <ul id="routeDetailTransfers"></ul>
+                </div>
+                <div>
+                  <span>Knowledge gap</span>
+                  <ul id="routeDetailGap"></ul>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="development-route">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow eyebrow--dark">03 · How to get there</div>
+          <h2>Choose how far you want to travel.</h2>
+        </div>
+        <p>
+          Development is not one ladder. Start with curiosity, build capability,
+          stretch into a different context, or experience another role directly.
+          The transport mode reflects the intensity of movement — not your seniority.
+        </p>
+      </div>
+
+      <div id="developmentContext" class="development-context card">
+        <div>
+          <span class="development-context__label">Your route</span>
+          <strong id="developmentContextTitle">Explore development options</strong>
+        </div>
+        <p id="developmentContextText">Select any mode below, or compare two functions above to get a suggested starting point.</p>
+      </div>
+
+      <div class="transport-track" aria-label="Four development modes">
+        <button class="transport-stop is-active" type="button" data-development-mode="punt">
+          <span class="transport-stop__icon" aria-hidden="true">🚣</span>
+          <span class="transport-stop__mode">Punting</span>
+          <strong>Explore & discover</strong>
+          <small>Understand possibilities with low commitment.</small>
+        </button>
+        <div class="transport-line" aria-hidden="true"></div>
+        <button class="transport-stop" type="button" data-development-mode="walk">
+          <span class="transport-stop__icon" aria-hidden="true">🚶</span>
+          <span class="transport-stop__mode">Walking</span>
+          <strong>Build capability</strong>
+          <small>Gain knowledge, exposure and confidence.</small>
+        </button>
+        <div class="transport-line" aria-hidden="true"></div>
+        <button class="transport-stop" type="button" data-development-mode="cycle">
+          <span class="transport-stop__icon" aria-hidden="true">🚲</span>
+          <span class="transport-stop__mode">Cycling</span>
+          <strong>Stretch & broaden</strong>
+          <small>Practise capabilities in a new context.</small>
+        </button>
+        <div class="transport-line" aria-hidden="true"></div>
+        <button class="transport-stop" type="button" data-development-mode="train">
+          <span class="transport-stop__icon" aria-hidden="true">🚆</span>
+          <span class="transport-stop__mode">Train</span>
+          <strong>Experience another role</strong>
+          <small>Make a substantial or formal career move.</small>
+        </button>
+      </div>
+
+      <div class="development-panel card">
+        <div class="development-panel__heading">
+          <div>
+            <span id="developmentPanelIcon" class="development-panel__icon">🚣</span>
+            <div>
+              <div id="developmentPanelMode" class="eyebrow eyebrow--dark">Punting</div>
+              <h3 id="developmentPanelTitle">Explore & discover</h3>
+            </div>
+          </div>
+          <p id="developmentPanelDescription">Low-commitment ways to understand another function, reflect on your interests and discover possible routes.</p>
+        </div>
+        <div id="developmentActivities" class="activity-grid"></div>
+        <div class="route-builder">
+          <div>
+            <span class="route-builder__label">My development route</span>
+            <p>Click activities to add or remove them from a simple route you could discuss with your manager.</p>
+          </div>
+          <div id="selectedDevelopmentActivities" class="selected-activities" aria-live="polite"></div>
+          <button id="clearDevelopmentRoute" class="btn btn--ghost btn--small" type="button">Clear route</button>
+        </div>
+        <div class="development-note">
+          <b>Career stage is a separate dimension.</b> An entry-level employee, an intermediate employee and a senior leader can all use any of these modes; the scale and complexity of the experience changes.
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint" id="skills-bank">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow eyebrow--dark">04 · Skills bank</div>
+          <h2>A shared language for what people can do.</h2>
+        </div>
+        <p>
+          Search a shared language for transferable capability, see how skills are
+          applied inside different functions, and inspect the specialist knowledge attached to each area.
+        </p>
+      </div>
+
+      <div class="definition-banner">
+        <div class="definition-banner__mark">SB</div>
+        <div>
+          <div class="eyebrow eyebrow--light">Definition</div>
+          <h3>What is a Skills Bank?</h3>
+          <p>
+            The Skills Bank is a shared language for understanding the <strong>capabilities,
+            knowledge and experience</strong> that exist across the organisation. It helps
+            employees recognise skills they already use, understand how those capabilities
+            translate across functions, and identify specialist knowledge they may want to
+            build for future career moves.
+          </p>
+        </div>
+      </div>
+
+      <div class="bank-controls card">
+        <label class="search-box">
+          <span class="sr-only">Search the skills bank</span>
+          <input id="skillSearch" type="search" placeholder="Search a skill, e.g. storytelling, data, negotiation…" />
+        </label>
+        <label>
+          <span class="sr-only">Filter by function</span>
+          <select id="skillFunctionFilter">
+            <option value="all">All functions</option>
+          </select>
+        </label>
+        <div class="segmented" aria-label="Skills bank view">
+          <button type="button" class="is-active" data-skill-view="transferable">Transferable skills</button>
+          <button type="button" data-skill-view="applied">Applied by function</button>
+          <button type="button" data-skill-view="specialist">Specialist knowledge</button>
+        </div>
+      </div>
+
+      <div id="skillsBankGrid" class="skills-bank-grid"></div>
+    </section>
+
+    <section class="section section--dark" id="examples">
+      <div class="shell">
+        <div class="section-heading section-heading--light">
+          <div>
+            <div class="eyebrow">05 · Career journeys in practice</div>
+            <h2>Real routes. Real careers.</h2>
+          </div>
+          <p>
+            These anonymised journeys show why cross-functional movement matters:
+            a sideways move can be a bridge, an accelerator, or a way to return stronger.
+          </p>
+        </div>
+
+        <div id="journeyList" class="journey-list"></div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="shell closing__inner">
+        <div>
+          <div class="eyebrow eyebrow--light">The core message</div>
+          <h2>You do not start from scratch when you move.</h2>
+        </div>
+        <p>
+          You carry capability with you. The question is not “Do I already know this
+          function?” but “What do I already have, how does it apply differently there,
+          and what do I need to learn next?”
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <span>Your Career, Mapped · prototype</span>
+      <span>Built as a dependency-free HTML / CSS / JavaScript demo.</span>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
